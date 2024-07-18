@@ -19,31 +19,31 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	ConnectService_NewConnect_FullMethodName = "/rand.ConnectService/NewConnect"
+	StreamingService_NewConnect_FullMethodName = "/rand.StreamingService/NewConnect"
 )
 
-// ConnectServiceClient is the client API for ConnectService service.
+// StreamingServiceClient is the client API for StreamingService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ConnectServiceClient interface {
-	NewConnect(ctx context.Context, in *FrequencyRequest, opts ...grpc.CallOption) (ConnectService_NewConnectClient, error)
+type StreamingServiceClient interface {
+	NewConnect(ctx context.Context, in *FrequencyRequest, opts ...grpc.CallOption) (StreamingService_NewConnectClient, error)
 }
 
-type connectServiceClient struct {
+type streamingServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewConnectServiceClient(cc grpc.ClientConnInterface) ConnectServiceClient {
-	return &connectServiceClient{cc}
+func NewStreamingServiceClient(cc grpc.ClientConnInterface) StreamingServiceClient {
+	return &streamingServiceClient{cc}
 }
 
-func (c *connectServiceClient) NewConnect(ctx context.Context, in *FrequencyRequest, opts ...grpc.CallOption) (ConnectService_NewConnectClient, error) {
+func (c *streamingServiceClient) NewConnect(ctx context.Context, in *FrequencyRequest, opts ...grpc.CallOption) (StreamingService_NewConnectClient, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ConnectService_ServiceDesc.Streams[0], ConnectService_NewConnect_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &StreamingService_ServiceDesc.Streams[0], StreamingService_NewConnect_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &connectServiceNewConnectClient{ClientStream: stream}
+	x := &streamingServiceNewConnectClient{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -53,83 +53,83 @@ func (c *connectServiceClient) NewConnect(ctx context.Context, in *FrequencyRequ
 	return x, nil
 }
 
-type ConnectService_NewConnectClient interface {
-	Recv() (*Frequency, error)
+type StreamingService_NewConnectClient interface {
+	Recv() (*FrequencyResponse, error)
 	grpc.ClientStream
 }
 
-type connectServiceNewConnectClient struct {
+type streamingServiceNewConnectClient struct {
 	grpc.ClientStream
 }
 
-func (x *connectServiceNewConnectClient) Recv() (*Frequency, error) {
-	m := new(Frequency)
+func (x *streamingServiceNewConnectClient) Recv() (*FrequencyResponse, error) {
+	m := new(FrequencyResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-// ConnectServiceServer is the server API for ConnectService service.
-// All implementations must embed UnimplementedConnectServiceServer
+// StreamingServiceServer is the server API for StreamingService service.
+// All implementations must embed UnimplementedStreamingServiceServer
 // for forward compatibility
-type ConnectServiceServer interface {
-	NewConnect(*FrequencyRequest, ConnectService_NewConnectServer) error
-	mustEmbedUnimplementedConnectServiceServer()
+type StreamingServiceServer interface {
+	NewConnect(*FrequencyRequest, StreamingService_NewConnectServer) error
+	mustEmbedUnimplementedStreamingServiceServer()
 }
 
-// UnimplementedConnectServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedConnectServiceServer struct {
+// UnimplementedStreamingServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedStreamingServiceServer struct {
 }
 
-func (UnimplementedConnectServiceServer) NewConnect(*FrequencyRequest, ConnectService_NewConnectServer) error {
+func (UnimplementedStreamingServiceServer) NewConnect(*FrequencyRequest, StreamingService_NewConnectServer) error {
 	return status.Errorf(codes.Unimplemented, "method NewConnect not implemented")
 }
-func (UnimplementedConnectServiceServer) mustEmbedUnimplementedConnectServiceServer() {}
+func (UnimplementedStreamingServiceServer) mustEmbedUnimplementedStreamingServiceServer() {}
 
-// UnsafeConnectServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ConnectServiceServer will
+// UnsafeStreamingServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to StreamingServiceServer will
 // result in compilation errors.
-type UnsafeConnectServiceServer interface {
-	mustEmbedUnimplementedConnectServiceServer()
+type UnsafeStreamingServiceServer interface {
+	mustEmbedUnimplementedStreamingServiceServer()
 }
 
-func RegisterConnectServiceServer(s grpc.ServiceRegistrar, srv ConnectServiceServer) {
-	s.RegisterService(&ConnectService_ServiceDesc, srv)
+func RegisterStreamingServiceServer(s grpc.ServiceRegistrar, srv StreamingServiceServer) {
+	s.RegisterService(&StreamingService_ServiceDesc, srv)
 }
 
-func _ConnectService_NewConnect_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _StreamingService_NewConnect_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(FrequencyRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ConnectServiceServer).NewConnect(m, &connectServiceNewConnectServer{ServerStream: stream})
+	return srv.(StreamingServiceServer).NewConnect(m, &streamingServiceNewConnectServer{ServerStream: stream})
 }
 
-type ConnectService_NewConnectServer interface {
-	Send(*Frequency) error
+type StreamingService_NewConnectServer interface {
+	Send(*FrequencyResponse) error
 	grpc.ServerStream
 }
 
-type connectServiceNewConnectServer struct {
+type streamingServiceNewConnectServer struct {
 	grpc.ServerStream
 }
 
-func (x *connectServiceNewConnectServer) Send(m *Frequency) error {
+func (x *streamingServiceNewConnectServer) Send(m *FrequencyResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-// ConnectService_ServiceDesc is the grpc.ServiceDesc for ConnectService service.
+// StreamingService_ServiceDesc is the grpc.ServiceDesc for StreamingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ConnectService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rand.ConnectService",
-	HandlerType: (*ConnectServiceServer)(nil),
+var StreamingService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "rand.StreamingService",
+	HandlerType: (*StreamingServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "NewConnect",
-			Handler:       _ConnectService_NewConnect_Handler,
+			Handler:       _StreamingService_NewConnect_Handler,
 			ServerStreams: true,
 		},
 	},
