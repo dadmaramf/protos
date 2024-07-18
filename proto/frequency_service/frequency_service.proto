@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package rand;
+import "google/protobuf/timestamp.proto";
+option go_package = "dadmaramf.frequency_service.v1;frequency_servicev1";
+
+service ConnectService {
+    rpc NewConnect (FrequencyRequest) returns (stream Frequency);
+}
+
+message Frequency {
+    string session_id = 1;
+    google.protobuf.Timestamp timenow = 3;
+    double frequency = 4;
+}
+
+message FrequencyRequest {}
