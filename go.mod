@@ -1,4 +1,4 @@
-module protos
+module github.com/dadmaramf/protos
 
 go 1.21.1
 
