@@ -10,4 +10,7 @@ tasks:
     desc: "Generate code from proto files"
     cmds: 
       - export PATH=$HOME/go/bin:$PATH 
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2
+      - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
       - protoc -I proto proto/frequency_service/*.proto --go_out=./gen/go/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/ --go-grpc_opt=paths=source_relative
+      - protoc -I proto proto/scalability/*.proto --go_out=./gen/go/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/ --go-grpc_opt=paths=source_relative

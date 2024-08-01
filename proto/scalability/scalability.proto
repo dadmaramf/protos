@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "dadmaramf.scalability.v1;scalabilityv1";
+
+service Operations {
+    rpc Add(AddRequest) returns (AddResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+}
+
+message AddRequest {
+    string entry = 1;
+}
+
+message AddResponse {
+    uint64 commit_index = 1;
+}
+
+message GetRequest {
+}
+
+message GetResponse {
+    uint64 read_at_index = 1;
+    repeated string entry = 2;
+}
